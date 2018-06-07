@@ -502,9 +502,10 @@ class Minio(object):
                                       query=query, preload_content=False)
             try:
                 for line in response.stream():
-                    event = json.loads(line)
-                    if event['Records'] is not None:
-                        yield event
+                    if len(line.strip())>0:
+                        event = json.loads(line)
+                        if event['Records'] is not None:
+                            yield event
             except SyntaxError:
                 response.close()
                 continue
